@@ -1,0 +1,40 @@
+<nav class="navbar navbar-dark bg-secondary">
+    <div class="container-fluid">
+        <button class="btn btn-primary" type="submit" routerLink="/usuarios">Ver usuarios</button>
+    </div>
+</nav>
+
+<section class="container mt-5">
+    <h4 class="mb-5 text-center">Informacíon de usuario</h4>
+
+    <form>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Nombre(s)</label>
+            <input type="text" class="form-control" formControlName="nombre" placeholder="escribe tu nombre">
+        </div>
+    
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Apellido paterno</label>
+            <input type="text" class="form-control" formControlName="apellidoP" placeholder="">
+        </div>
+    
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Apellido materno</label>
+            <input type="text" class="form-control" formControlName="apellidoM" placeholder="">
+        </div>
+    
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Dirección</label>
+            <input type="text" class="form-control" formControlName="direccion" placeholder="direccion #55, ejemplo">
+        </div>
+    
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Teléfono</label>
+            <input type="number" class="form-control" formControlName="telefono" placeholder="0000000000">
+        </div>
+    
+        <div class="row justify-content-md-end mt-5">
+            <button class="btn btn-success col-2">Guardar cambios</button>
+        </div>
+    </form>
+</section>
