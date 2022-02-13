@@ -1,31 +1,34 @@
 <div id="form" class="mt-5">
     <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">Buscar usuario: </span>
-        <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-            aria-describedby="basic-addon1">
+        <input #busqueda type="text" class="form-control" placeholder="nombre, apellidos" aria-label="Username"
+            aria-describedby="basic-addon1" (keyup)="searchUsers(busqueda.value)">
     </div>
 
-    <table class="table table-bordered table-hover">
+    <table *ngIf="!loading" class="table table-bordered table-hover">
         <thead>
             <tr>
                 <th>Opciones</th>
-                <th>Nombre</th>
+                <th>Nombre(s)</th>
                 <th>Apellidos</th>
                 <th>Dirección</th>
                 <th>Teléfono</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr *ngFor="let usuario of listaUsuarios">
                 <td>
-                    <button type="button" class="btn btn-outline-primary">Edit</button>
-                    <button type="button" class="btn btn-outline-danger">Delete</button>
+                    <button type="button" class="btn btn-outline-primary" >Edit</button>
+                    <button type="button" class="btn btn-outline-danger" (click)="deleteUser(usuario._id)">Delete</button>
                 </td>
-                <td>Carlos</td>
-                <td>Apellido</td>
-                <td>1</td>
-                <td>dasdsad</td>
+                <td>{{usuario.nombre}}</td>
+                <td>{{usuario.apellidoP}} {{usuario.apellidoM}}</td>
+                <td>{{usuario.direccion}}</td>
+                <td>{{usuario.telefono}}</td>
             </tr>
         </tbody>
     </table>
+
+    <h4 *ngIf="loading" class="text-center">Cargando</h4>
+    <h4 *ngIf="listaUsuarios.length < 1 && !loading" class="text-center">No hay datos para mostrar</h4>
 </div>
