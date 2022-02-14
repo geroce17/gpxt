@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2'
@@ -11,40 +13,46 @@ import Swal from 'sweetalert2'
 })
 export class ListadoUsuariosComponent implements OnInit {
 
-  listaUsuarios: Usuario[] = [];
-  NoUsers: number = 0;
-  loading: boolean = true;
+  public usuarios: Usuario[] = [];
+  public loading: boolean = true;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.userService.getAllUsers().refetch();
+    this.getAllUsers();
   }
 
-  loadUsers() {
+  getAllUsers() {
+    this.loading = true;
+    this.usuarios = [];
     this.userService.getAllUsers()
-      .subscribe((users: Usuario[]) => {
-        if (users.length > 0) {
-          this.listaUsuarios = users;
-        }
-        else{
-          this.listaUsuarios = [];
-        }
+    .valueChanges.pipe(
+      map((data: any) => data.data.allUsers))
+      .subscribe(
+        (users: Usuario[]) => {
+          this.usuarios = users;
+          this.loading = false;
+        })
+  }
 
-        this.loading = false;
-      })
+  reloadUsers(){
+
+    this.userService.getAllUsers().refetch();
+    this.getAllUsers();
+    
   }
 
   searchUsers(termino: string) {
     this.loading = true;
     this.userService.searchUsers(termino)
       .subscribe((results: Usuario[]) => {
-        this.listaUsuarios = results;
+        this.usuarios = results;
         this.loading = false;
       });
   }
 
-  deleteUser(uid: string) {
+  deleteUser(uid: string, index: number) {
     Swal.fire({
       title: '¿Deseas borrar este usuario?',
       text: "Este procedimiento es irreversible",
@@ -57,20 +65,21 @@ export class ListadoUsuariosComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.userService.deleteUser(uid)
-          .subscribe(message => {
-            console.log(message);
-            this.userService.deleteUser(uid)
-              .subscribe(data => {
-                Swal.fire(
-                  'Usuario eliminado',
-                  // `${data} fue eliminado correctamente`,
-                  'success'
-                ).then(() => {
-                  this.loadUsers();
-                })
-              });
+          .subscribe((message: any) => {
+
+            Swal.fire(
+              'Usuario eliminado',
+              message.data.deleteUser,
+              'success'
+            ).then(() => {
+              this.reloadUsers();
+            });
           });
       }
-    })
+    });
+  }
+
+  detailUser(uid: string) {
+    this.router.navigate(['/usuario', uid]);
   }
 }

@@ -1,7 +1,7 @@
 <div id="form" class="mt-5">
     <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">Buscar usuario: </span>
-        <input #busqueda type="text" class="form-control" placeholder="nombre, apellidos" aria-label="Username"
+        <input #busqueda type="text" class="form-control" placeholder="nombre o apellidos" aria-label="Username"
             aria-describedby="basic-addon1" (keyup)="searchUsers(busqueda.value)">
     </div>
 
@@ -16,10 +16,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let usuario of listaUsuarios">
+            <tr *ngFor="let usuario of usuarios; let i = index">
                 <td>
-                    <button type="button" class="btn btn-outline-primary" >Edit</button>
-                    <button type="button" class="btn btn-outline-danger" (click)="deleteUser(usuario._id)">Delete</button>
+                    <button type="button" class="btn btn-outline-primary" (click)="detailUser(usuario._id)">Edit</button>
+                    <button type="button" class="btn btn-outline-danger" (click)="deleteUser(usuario._id, i)">Delete</button>
                 </td>
                 <td>{{usuario.nombre}}</td>
                 <td>{{usuario.apellidoP}} {{usuario.apellidoM}}</td>
@@ -30,5 +30,5 @@
     </table>
 
     <h4 *ngIf="loading" class="text-center">Cargando</h4>
-    <h4 *ngIf="listaUsuarios.length < 1 && !loading" class="text-center">No hay datos para mostrar</h4>
+    <h4 *ngIf="usuarios.length < 1 && !loading" class="text-center">No hay datos para mostrar</h4>
 </div>

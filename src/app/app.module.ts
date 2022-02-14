@@ -28,7 +28,7 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
     UsuariosComponent,
     ListadoUsuariosComponent,
     RegistroUsuarioComponent,
-    DetalleUsuarioComponent,
+    DetalleUsuarioComponent
   ],
   imports: [
     BrowserModule,
