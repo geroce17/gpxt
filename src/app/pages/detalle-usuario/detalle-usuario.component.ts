@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 })
 export class DetalleUsuarioComponent implements OnInit {
 
+  public loading = true;
   public formSubmitted = false;
   public id: string = "";
   public userForm = this.fb.group({
@@ -36,17 +37,22 @@ export class DetalleUsuarioComponent implements OnInit {
   }
 
   getUserInfo(uid: string) {
+    this.loading = true;
     this.userService.getUserInfo(uid)
       .valueChanges.pipe(
         map(({ data }) => data.findUser)
       ).subscribe(
         (userInfo: Usuario) => {
           this.userForm.patchValue(userInfo)
+          this.loading = false;
         })
   }
 
   getReloadInfo(uid: string) {
-    this.userService.getUserInfo(uid).refetch();
+    this.loading = true;
+    this.userService.getUserInfo(uid).refetch().then(() => {
+      this.loading = false;
+    });
   }
 
   saveUserChanges() {

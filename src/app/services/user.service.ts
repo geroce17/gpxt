@@ -95,7 +95,7 @@ export class UserService {
     })
   }
 
-  searchUsers(termino: String) {
+  searchUsers(termino: String): Observable<Usuario[]> {
     return this.apollo.watchQuery<any>(
       {
         query: SEARCH_USERS,
@@ -108,7 +108,7 @@ export class UserService {
     );
   }
 
-  deleteUser(uid: string) {
+  deleteUser(uid: string): Observable<string> {
     console.log(uid);
 
     return this.apollo.mutate({
@@ -116,17 +116,22 @@ export class UserService {
       variables: {
         uid
       }
-    });
+    }).pipe(
+      map((data: any) => {
+        var { msg } = JSON.parse(data.data.deleteUser);
+        return msg;
+      })
+    );
   }
 
   createUser(userInfo: Usuario) {
     console.log(userInfo);
-    
+
     return this.apollo.mutate({
       mutation: CREATE_USER,
       variables: {
         userInfo
-      }    
+      }
     }).pipe(
       map((data: any) => data.data.createUser)
     )

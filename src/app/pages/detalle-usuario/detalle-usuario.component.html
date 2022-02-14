@@ -7,7 +7,7 @@
 <section class="container mt-5 mb-5">
     <h4 class="mb-5 text-center">Informacíon de usuario</h4>
 
-    <form [formGroup]="userForm" (submit)="saveUserChanges()">
+    <form *ngIf="!loading" [formGroup]="userForm" (submit)="saveUserChanges()" class="animate__animated animate__fadeIn">
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Nombre(s)</label>
             <input type="text" class="form-control" formControlName="nombre" placeholder="escribe tu nombre" formControlName="nombre">
@@ -37,4 +37,6 @@
             <button class="btn btn-success col-2">Guardar cambios</button>
         </div>
     </form>
+
+    <h4 *ngIf="loading" class="text-center" >Cargando</h4>
 </section>

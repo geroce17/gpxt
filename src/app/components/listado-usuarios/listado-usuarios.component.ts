@@ -68,8 +68,8 @@ export class ListadoUsuariosComponent implements OnInit {
           .subscribe((message: any) => {
 
             Swal.fire(
-              'Usuario eliminado',
-              message.data.deleteUser,
+              message,
+              '',
               'success'
             ).then(() => {
               this.reloadUsers();
